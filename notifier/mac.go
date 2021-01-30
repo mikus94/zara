@@ -18,8 +18,8 @@ type NotificationMessage struct {
 }
 
 const (
-	defaultAppIcon    = "../static/gopher.png"
-	defaultContentImg = "../static/gopher.png"
+	defaultAppIcon    = "gopher.png"
+	defaultContentImg = "gopher.png"
 )
 
 func Notify(logger logrus.FieldLogger, msg *NotificationMessage) {
