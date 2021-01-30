@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -19,9 +18,8 @@ const (
 
 func main() {
 	logger := logrus.New()
-	logger.SetLevel(logrus.DebugLevel)
+	// logger.SetLevel(logrus.DebugLevel)
 
-	fmt.Println(os.Getwd())
 	path := "./url_sites.csv"
 	if len(os.Args) > 1 {
 		path = os.Args[1]

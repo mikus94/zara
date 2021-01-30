@@ -42,6 +42,15 @@ func checkIfDisabled(s *goquery.Selection) bool {
 		s.HasClass(sizeComingSoonSelector)
 }
 
+func isDesiredSize(size string, wanted []string) bool {
+	for _, w := range wanted {
+		if strings.ToUpper(w) == strings.ToUpper(size) {
+			return true
+		}
+	}
+	return false
+}
+
 func (z *zara) Scrape(task IScraperTask) {
 	logger := z.log.WithFields(logrus.Fields{
 		"method":   "Scrape",
@@ -67,13 +76,17 @@ func (z *zara) Scrape(task IScraperTask) {
 		sizeList := s.Find(ulSizeListSelector).First()
 		sizeList.Find("li").Each(func(i int, s *goquery.Selection) {
 			// we get li element of size list
-			size := s.Text()
+			size := strings.TrimSpace(s.Text())
 			logger = logger.WithField("size", size)
+			if !isDesiredSize(size, task.GetSizes()) {
+				logger.Debug("skip size")
+				return
+			}
 			if checkIfDisabled(s) {
 				logger.Debug("size not available")
 				return
 			}
-			logger.Debug("available")
+			logger.Info("available")
 			notifier.Notify(logger, &notifier.NotificationMessage{
 				Title:    "Zara has your size",
 				Subtitle: productName,
