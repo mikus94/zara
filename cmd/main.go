@@ -88,6 +88,7 @@ func main() {
 			logger.Info("finishing my job")
 			break
 		case <-time.After(check_timeout):
+			logger.Info("checking")
 			// checking
 			for _, task := range objectsToScrap {
 				zaraScraper.Scrape(task)
