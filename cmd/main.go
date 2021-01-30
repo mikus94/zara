@@ -25,15 +25,14 @@ func main() {
 		path = os.Args[1]
 	}
 
-	cfg := viper.New()
-	cfg.AddConfigPath(".")
-	cfg.SetConfigType("json")
+	viper.AddConfigPath(".")
+	viper.SetConfigType("json")
 
-	if err := cfg.ReadInConfig(); err != nil {
+	if err := viper.ReadInConfig(); err != nil {
 		logger.WithError(err).Fatal("cannot find configuration file")
 	}
 
-	execution_time := cfg.GetDuration("execution_time")
+	execution_time := viper.GetDuration("execution_time")
 	if execution_time.Seconds() < 0 || execution_time.Hours() > 6 {
 		logger.Warnf(
 			"execution time passed was: %s, using default %s",
@@ -41,7 +40,7 @@ func main() {
 		)
 		execution_time = DEFAULT_EXECUTION_TIME
 	}
-	check_timeout := cfg.GetDuration("check_timeout")
+	check_timeout := viper.GetDuration("check_timeout")
 	if check_timeout.Seconds() < 1 || check_timeout.Hours() > 1 {
 		logger.Warnf(
 			"check timeout passed was: %s, using default %s",
